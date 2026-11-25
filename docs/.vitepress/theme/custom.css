@@ -1,0 +1,198 @@
+:root {
+  --vp-c-bg: #fafafa;
+  --vp-c-bg-alt: #f2f3f5;
+  --vp-c-bg-soft: #f6f7f8;
+  --vp-c-bg-elv: #ffffff;
+  --vp-c-text-1: #21252b;
+  --vp-c-text-2: #525a66;
+  --vp-c-text-3: #8b929d;
+  --vp-c-divider: #e2e5e9;
+  --vp-c-brand-1: #b45309;
+  --vp-c-brand-2: #92400e;
+  --vp-c-brand-3: #78350f;
+  --vp-c-brand-soft: rgba(180, 83, 9, 0.08);
+  --vp-c-warning-1: #b45309;
+  --vp-c-danger-1: #c22626;
+  --vp-button-brand-border: var(--vp-c-brand-1);
+  --vp-button-brand-text: #ffffff;
+  --vp-button-brand-bg: var(--vp-c-brand-1);
+  --vp-button-brand-hover-border: var(--vp-c-brand-1);
+  --vp-button-brand-hover-text: #ffffff;
+  --vp-button-brand-hover-bg: var(--vp-c-brand-2);
+  --vp-button-brand-active-border: var(--vp-c-brand-3);
+  --vp-button-brand-active-text: #ffffff;
+  --vp-button-brand-active-bg: var(--vp-c-brand-3);
+}
+
+.dark {
+  --vp-c-bg: #181a1d;
+  --vp-c-bg-alt: #202329;
+  --vp-c-bg-soft: #24272e;
+  --vp-c-bg-elv: #2a2e36;
+  --vp-c-text-1: #e4e6e9;
+  --vp-c-text-2: #a8afb9;
+  --vp-c-text-3: #707986;
+  --vp-c-divider: #343940;
+  --vp-c-brand-1: #e08a2e;
+  --vp-c-brand-2: #c26f1c;
+  --vp-c-brand-3: #a45a12;
+  --vp-c-brand-soft: rgba(224, 138, 46, 0.1);
+  --vp-c-warning-1: #e08a2e;
+  --vp-c-danger-1: #ef4444;
+}
+
+:root,
+.dark {
+  --vp-layout-max-width: 1920px;
+}
+
+@media (min-width: 960px) {
+  .VPDoc .container {
+    max-width: min(1920px, calc(100vw - var(--vp-sidebar-width) - 64px));
+  }
+
+  .VPDoc .content-container {
+    max-width: min(1180px, calc(100vw - var(--vp-sidebar-width) - 160px));
+  }
+
+  .VPDoc .content {
+    max-width: 100%;
+  }
+
+  .VPDoc.has-aside .content-container {
+    max-width: min(1080px, calc(100vw - var(--vp-sidebar-width) - 360px));
+  }
+
+  .VPHome .container {
+    max-width: 1280px;
+  }
+
+  .VPHero .main {
+    max-width: 860px;
+  }
+
+  .VPHero .image {
+    max-width: 480px;
+  }
+}
+
+.VPNav {
+  border-bottom: 1px solid var(--vp-c-divider);
+}
+
+.VPNavBarTitle .title {
+  font-weight: 700;
+}
+
+.VPSidebarItem.level-1 > .item > .text {
+  color: var(--vp-c-text-1);
+  font-weight: 700;
+}
+
+.VPFeature {
+  border: 1px solid var(--vp-c-divider);
+  border-top: 2px solid var(--vp-c-brand-1);
+  border-radius: 4px;
+  background: var(--vp-c-bg-elv);
+  transition: border-color 0.18s ease, transform 0.18s ease;
+}
+
+.VPFeature:hover {
+  border-color: var(--vp-c-brand-1);
+  transform: translateY(-2px);
+}
+
+.VPHero .name {
+  color: var(--vp-c-brand-1);
+  letter-spacing: 0.04em;
+}
+
+.vp-doc h1,
+.vp-doc h2,
+.vp-doc h3 {
+  font-weight: 700;
+}
+
+.vp-doc h2 {
+  border-left: 3px solid var(--vp-c-brand-1);
+  padding-left: 0.7rem;
+}
+
+.vp-doc blockquote {
+  border-left: 3px solid var(--vp-c-brand-1);
+  background: var(--vp-c-bg-soft);
+}
+
+.vp-doc table {
+  border: 1px solid var(--vp-c-divider);
+}
+
+.vp-doc th {
+  background: var(--vp-c-bg-alt);
+  color: var(--vp-c-text-1);
+  font-weight: 700;
+}
+
+.vp-doc tr:nth-child(even) {
+  background: var(--vp-c-bg-soft);
+}
+
+.vp-doc :not(pre) > code {
+  color: var(--vp-c-brand-2);
+  background: var(--vp-c-bg-soft);
+  border: 1px solid var(--vp-c-divider);
+  border-radius: 3px;
+  padding: 0 4px;
+}
+
+.vp-doc img {
+  border: 1px solid var(--vp-c-divider);
+  border-radius: 3px;
+  max-width: 100%;
+  height: auto;
+}
+
+.VPButton.brand {
+  border-radius: 4px;
+}
+
+.VPFooter {
+  border-top: 1px solid var(--vp-c-divider);
+}
+
+.sidebar-resize-handle {
+  position: fixed;
+  z-index: calc(var(--vp-z-index-sidebar, 25) + 5);
+  width: 8px;
+  bottom: 0;
+  cursor: col-resize;
+  touch-action: none;
+  display: none;
+}
+
+.sidebar-resize-handle::after {
+  content: '';
+  position: absolute;
+  left: 3px;
+  top: 0;
+  bottom: 0;
+  width: 2px;
+  background: transparent;
+  transition: background 0.15s ease;
+}
+
+.sidebar-resize-handle:hover::after,
+body.sidebar-resizing .sidebar-resize-handle::after {
+  background: var(--vp-c-brand-1);
+}
+
+body.sidebar-resizing {
+  cursor: col-resize;
+  user-select: none;
+}
+
+@media (max-width: 959px) {
+  .sidebar-resize-handle {
+    display: none !important;
+  }
+}

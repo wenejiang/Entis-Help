@@ -1,0 +1,28 @@
+import { ssrRenderAttrs, ssrRenderAttr } from "vue/server-renderer";
+import { _ as _imports_0 } from "./5291123838ecf72d-20261015000319-n5whljg.BkkP8UAO.js";
+import { _ as _imports_3 } from "./d0c4aff8c2a66e4c-20261015000319-bfojtws.CsIcZs8j.js";
+import { _ as _imports_8 } from "./77e56d33777be27a-20261015000319-ahme7j8.DrXopHw0.js";
+import { useSSRContext } from "vue";
+import { _ as _export_sfc } from "./plugin-vue_export-helper.1tPrXgE0.js";
+const _imports_1 = "/entismax/v4/assets/3ed58242066998e3-20261015000320-1c5s5s1.B0DUU1La.png";
+const _imports_2 = "/entismax/v4/assets/4bdc1bf203684e2f-20261015000320-pxds68b.AfFNxTMI.png";
+const _imports_4 = "/entismax/v4/assets/cd205b623d938654-20261015000320-q62znth.CO666xsC.png";
+const _imports_5 = "/entismax/v4/assets/0a0cfa689cc98c7c-20261015000320-v2bzt0x.DKJJZpuA.png";
+const _imports_6 = "/entismax/v4/assets/1458d6c7cfeb3e58-20261015000320-64rias9.DDJ5_vbO.png";
+const _imports_7 = "/entismax/v4/assets/5f18ee589c1588b1-20261015000320-qrtdq5b.BHdVi1KM.png";
+const __pageData = JSON.parse('{"title":"9：罐监控选项","description":"","frontmatter":{"title":"9：罐监控选项","date":"2026-10-14T16:03:20.000Z","lastmod":"2026-10-14T16:03:20.000Z"},"headers":[],"relativePath":"guide/1079.md","filePath":"guide/EntisMAXIV/EntisMaxIV帮助文档/配置说明/罐监控配置/9：罐监控选项.md"}');
+const _sfc_main = { name: "guide/1079.md" };
+function _sfc_ssrRender(_ctx, _push, _parent, _attrs, $props, $setup, $data, $options) {
+  _push(`<div${ssrRenderAttrs(_attrs)}><h1 id="_9-罐监控选项" tabindex="-1">9：罐监控选项 <a class="header-anchor" href="#_9-罐监控选项" aria-label="Permalink to &quot;9：罐监控选项&quot;">​</a></h1><h1 id="_9-罐监控选项-1" tabindex="-1">9：罐监控选项 <a class="header-anchor" href="#_9-罐监控选项-1" aria-label="Permalink to &quot;9：罐监控选项&quot;">​</a></h1><p>9：罐监控选项</p><h1 id="罐监控选项" tabindex="-1">罐监控选项 <a class="header-anchor" href="#罐监控选项" aria-label="Permalink to &quot;罐监控选项&quot;">​</a></h1><hr><h3 id="_1-功能描述" tabindex="-1">1：功能描述 <a class="header-anchor" href="#_1-功能描述" aria-label="Permalink to &quot;1：功能描述&quot;">​</a></h3><ul><li>罐监控模块的选项设置界面,包括&quot;基本设置&quot;,&quot;数据保存&quot;,&quot;定时报表输出&quot;,&quot;冗余设置&quot;,&quot;高级设置&quot;.</li></ul><h3 id="_2-如何开始使用" tabindex="-1">2：如何开始使用 <a class="header-anchor" href="#_2-如何开始使用" aria-label="Permalink to &quot;2：如何开始使用&quot;">​</a></h3><p><img${ssrRenderAttr("src", _imports_0)} alt="">依次打开菜单&quot;罐监控配置&quot; --&gt; &quot;罐监控选项&quot; 如图:  <img${ssrRenderAttr("src", _imports_1)} alt="">   <img${ssrRenderAttr("src", _imports_0)} alt="">打开窗口,如图:</p><p><img${ssrRenderAttr("src", _imports_2)} alt=""></p><h3 id="_3-操作说明" tabindex="-1">3：操作说明 <a class="header-anchor" href="#_3-操作说明" aria-label="Permalink to &quot;3：操作说明&quot;">​</a></h3><h5 id="常规设置项" tabindex="-1"><img${ssrRenderAttr("src", _imports_3)} alt="">常规设置项 <a class="header-anchor" href="#常规设置项" aria-label="Permalink to &quot;![](assets/d0c4aff8c2a66e4c-20261015000319-bfojtws.gif)常规设置项&quot;">​</a></h5><h5 id="数据保存" tabindex="-1"><img${ssrRenderAttr("src", _imports_4)} alt=""> <img${ssrRenderAttr("src", _imports_3)} alt="">数据保存 <a class="header-anchor" href="#数据保存" aria-label="Permalink to &quot;![](assets/cd205b623d938654-20261015000320-q62znth.png) ![](assets/d0c4aff8c2a66e4c-20261015000319-bfojtws.gif)数据保存&quot;">​</a></h5><p>主要设置罐的实时数据和历史数据的保存时间.一般请不要随便改动,尽量不要把时间调快,除非你安装的数据库版本和电脑性能都比较好.<img${ssrRenderAttr("src", _imports_5)} alt=""></p><h5 id="定时报表输出" tabindex="-1"><img${ssrRenderAttr("src", _imports_3)} alt="">定时报表输出 <a class="header-anchor" href="#定时报表输出" aria-label="Permalink to &quot;![](assets/d0c4aff8c2a66e4c-20261015000319-bfojtws.gif)定时报表输出&quot;">​</a></h5><p>此处针对的输出报表是罐数据即时报表.如需要定时输出其他报表,需要专门定制扩展模块.  <img${ssrRenderAttr("src", _imports_6)} alt=""></p><h5 id="高级设置" tabindex="-1"><img${ssrRenderAttr("src", _imports_3)} alt="">高级设置 <a class="header-anchor" href="#高级设置" aria-label="Permalink to &quot;![](assets/d0c4aff8c2a66e4c-20261015000319-bfojtws.gif)高级设置&quot;">​</a></h5><p>此处一般情况下不用改动<img${ssrRenderAttr("src", _imports_7)} alt=""></p><hr><p><img${ssrRenderAttr("src", _imports_8)} alt="">由于权限设置和软件使用的不同,每个用户看到的界面都会有所区别</p></div>`);
+}
+const _sfc_setup = _sfc_main.setup;
+_sfc_main.setup = (props, ctx) => {
+  const ssrContext = useSSRContext();
+  (ssrContext.modules || (ssrContext.modules = /* @__PURE__ */ new Set())).add("guide/EntisMAXIV/EntisMaxIV帮助文档/配置说明/罐监控配置/9：罐监控选项.md");
+  return _sfc_setup ? _sfc_setup(props, ctx) : void 0;
+};
+const _9______ = /* @__PURE__ */ _export_sfc(_sfc_main, [["ssrRender", _sfc_ssrRender]]);
+export {
+  __pageData,
+  _9______ as default
+};

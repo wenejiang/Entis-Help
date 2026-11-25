@@ -1,0 +1,28 @@
+import { ssrRenderAttrs, ssrRenderAttr } from "vue/server-renderer";
+import { _ as _imports_2 } from "./d0c4aff8c2a66e4c-20261015000318-wd6e841.1G53O5ZT.js";
+import { _ as _imports_8$1 } from "./77e56d33777be27a-20261015000318-n29j064.W9amo972.js";
+import { useSSRContext } from "vue";
+import { _ as _export_sfc } from "./plugin-vue_export-helper.1tPrXgE0.js";
+const _imports_0 = "/entislng/v5/assets/84b324b452494dac-20261015000318-sixmgj1.DLhfkkTD.png";
+const _imports_1 = "/entislng/v5/assets/8879044f6d50160d-20261015000318-1oxf4pb.DRPzu2g6.png";
+const _imports_3 = "/entislng/v5/assets/16d17387b6b6ee97-20261015000318-z48q0pl.CMG_BrrQ.png";
+const _imports_4 = "/entislng/v5/assets/3aa1a9fc0fc6c4bf-20261015000318-a7z838t.wZecZUjm.png";
+const _imports_5 = "/entislng/v5/assets/cebfb615fca143d3-20261015000318-s9w0asd.D0iTUD1P.png";
+const _imports_6 = "/entislng/v5/assets/85d1314cd52f0a66-20261015000318-pga0yz0.CQd_Mr7s.png";
+const _imports_8 = "/entislng/v5/assets/e313807b8a436ec2-20261015000318-vcz0c00.CZp8-P1L.png";
+const __pageData = JSON.parse('{"title":"3 数据库的备份","description":"","frontmatter":{"title":"3 数据库的备份","date":"2026-10-14T16:03:18.000Z","lastmod":"2026-10-14T16:03:18.000Z"},"headers":[],"relativePath":"guide/1065.md","filePath":"guide/EntisMAXIV/EntisMaxIV帮助文档/管理维护说明/系统操作/3 数据库的备份.md"}');
+const _sfc_main = { name: "guide/1065.md" };
+function _sfc_ssrRender(_ctx, _push, _parent, _attrs, $props, $setup, $data, $options) {
+  _push(`<div${ssrRenderAttrs(_attrs)}><h1 id="_3-数据库的备份" tabindex="-1">3 数据库的备份 <a class="header-anchor" href="#_3-数据库的备份" aria-label="Permalink to &quot;3 数据库的备份&quot;">​</a></h1><h1 id="_3-数据库的备份-1" tabindex="-1">3 数据库的备份 <a class="header-anchor" href="#_3-数据库的备份-1" aria-label="Permalink to &quot;3 数据库的备份&quot;">​</a></h1><p>3:数据库的备份</p><h1 id="数据库的备份" tabindex="-1">数据库的备份 <a class="header-anchor" href="#数据库的备份" aria-label="Permalink to &quot;数据库的备份&quot;">​</a></h1><h1 id="" tabindex="-1">--- <a class="header-anchor" href="#" aria-label="Permalink to &quot;---&quot;">​</a></h1><h3 id="_1-功能描述" tabindex="-1">1:功能描述 <a class="header-anchor" href="#_1-功能描述" aria-label="Permalink to &quot;1:功能描述&quot;">​</a></h3><ul><li>执行数据库备份</li><li>数据库还原请使用附加工具DBTools</li></ul><h3 id="_2-如何开始使用" tabindex="-1">2:如何开始使用 <a class="header-anchor" href="#_2-如何开始使用" aria-label="Permalink to &quot;2:如何开始使用&quot;">​</a></h3><p>依次打开菜单 &quot;系统&quot; --&gt; &quot;数据库备份&quot; ,打开如图:<img${ssrRenderAttr("src", _imports_0)} alt="">显示如下界面<img${ssrRenderAttr("src", _imports_1)} alt=""></p><h3 id="_3-操作说明" tabindex="-1">3:操作说明 <a class="header-anchor" href="#_3-操作说明" aria-label="Permalink to &quot;3:操作说明&quot;">​</a></h3><h5 id="设备备份路径" tabindex="-1"><img${ssrRenderAttr("src", _imports_2)} alt="">设备备份路径 <a class="header-anchor" href="#设备备份路径" aria-label="Permalink to &quot;![](assets/d0c4aff8c2a66e4c-20261015000318-wd6e841.gif)设备备份路径&quot;">​</a></h5><p>点击按钮&quot;设置备份路径&quot;,会弹出文件夹选择框,请选择好要备份的路径<img${ssrRenderAttr("src", _imports_3)} alt="">点击确定</p><h5 id="数据备份" tabindex="-1"><img${ssrRenderAttr("src", _imports_2)} alt="">数据备份 <a class="header-anchor" href="#数据备份" aria-label="Permalink to &quot;![](assets/d0c4aff8c2a66e4c-20261015000318-wd6e841.gif)数据备份&quot;">​</a></h5><p>在上一步设置好备份路径后,点击按钮&quot;备份&quot;,会显示进度条,表示备份正在进行,根据数据库大小不同,时间也会有所不同,请耐心等待.<img${ssrRenderAttr("src", _imports_4)} alt="">弹出如下确认框,表示备份已完成.可以退出<img${ssrRenderAttr("src", _imports_5)} alt=""></p><h5 id="设置定时备份" tabindex="-1"><img${ssrRenderAttr("src", _imports_2)} alt="">设置定时备份 <a class="header-anchor" href="#设置定时备份" aria-label="Permalink to &quot;![](assets/d0c4aff8c2a66e4c-20261015000318-wd6e841.gif)设置定时备份&quot;">​</a></h5><h5 id="点击按钮-设置定时备份-会显示如下窗体-请在窗体中设定定时方式-是按间隔还是时间定来定时进行备份" tabindex="-1">点击按钮&quot;设置定时备份&quot;,会显示如下窗体,请在窗体中设定定时方式,是按间隔还是时间定来定时进行备份. <a class="header-anchor" href="#点击按钮-设置定时备份-会显示如下窗体-请在窗体中设定定时方式-是按间隔还是时间定来定时进行备份" aria-label="Permalink to &quot;点击按钮&quot;设置定时备份&quot;,会显示如下窗体,请在窗体中设定定时方式,是按间隔还是时间定来定时进行备份.&quot;">​</a></h5><h5 id="-1" tabindex="-1"><img${ssrRenderAttr("src", _imports_6)} alt=""> <a class="header-anchor" href="#-1" aria-label="Permalink to &quot;![](assets/85d1314cd52f0a66-20261015000318-pga0yz0.png)&quot;">​</a></h5><p><img${ssrRenderAttr("src", _imports_8$1)} alt="">不管是按间隔还是时间点,备份的设置不要太频繁,系统空间容易超额.</p><h5 id="清除定时备份" tabindex="-1"><img${ssrRenderAttr("src", _imports_2)} alt="">清除定时备份 <a class="header-anchor" href="#清除定时备份" aria-label="Permalink to &quot;![](assets/d0c4aff8c2a66e4c-20261015000318-wd6e841.gif)清除定时备份&quot;">​</a></h5><p>如系统设置了定时备份功能,则按钮&quot;清除定时备份&quot;变为可用,点击按钮&quot;清除定时备份&quot;,会弹出确认框,确认是则会删除定时备份.<img${ssrRenderAttr("src", _imports_8)} alt="">定时备份删除后,按钮重新变为不可用状态</p><hr><p><img${ssrRenderAttr("src", _imports_8$1)} alt="">运行状态下不能还原数据库,所以数据库还原请使用附加工具DBTools,DBTools请在开始菜单中查找或在安装目录中查找</p></div>`);
+}
+const _sfc_setup = _sfc_main.setup;
+_sfc_main.setup = (props, ctx) => {
+  const ssrContext = useSSRContext();
+  (ssrContext.modules || (ssrContext.modules = /* @__PURE__ */ new Set())).add("guide/EntisMAXIV/EntisMaxIV帮助文档/管理维护说明/系统操作/3 数据库的备份.md");
+  return _sfc_setup ? _sfc_setup(props, ctx) : void 0;
+};
+const _3_______ = /* @__PURE__ */ _export_sfc(_sfc_main, [["ssrRender", _sfc_ssrRender]]);
+export {
+  __pageData,
+  _3_______ as default
+};

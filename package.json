@@ -1,0 +1,34 @@
+{
+  "name": "helpdoc",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "docs:dev": "node scripts/dev-all.mjs",
+    "docs:dev:max4": "cross-env DOCS_PRODUCT=max DOCS_VERSION=4 vitepress dev docs --port 5174 --strictPort",
+    "docs:dev:max5": "cross-env DOCS_PRODUCT=max DOCS_VERSION=5 vitepress dev docs --port 5175 --strictPort",
+    "docs:dev:lng4": "cross-env DOCS_PRODUCT=lng DOCS_VERSION=4 vitepress dev docs --port 5176 --strictPort",
+    "docs:dev:lng5": "cross-env DOCS_PRODUCT=lng DOCS_VERSION=5 vitepress dev docs --port 5177 --strictPort",
+    "docs:build": "npm run docs:build:all",
+    "docs:build:max4": "cross-env DOCS_PRODUCT=max DOCS_VERSION=4 vitepress build docs",
+    "docs:build:max5": "cross-env DOCS_PRODUCT=max DOCS_VERSION=5 vitepress build docs",
+    "docs:build:lng4": "cross-env DOCS_PRODUCT=lng DOCS_VERSION=4 vitepress build docs",
+    "docs:build:lng5": "cross-env DOCS_PRODUCT=lng DOCS_VERSION=5 vitepress build docs",
+    "docs:portal": "node scripts/portal.mjs",
+    "docs:build:all": "npm run docs:build:max4 && npm run docs:build:max5 && npm run docs:build:lng4 && npm run docs:build:lng5 && npm run docs:portal",
+    "docs:preview": "cross-env DOCS_PRODUCT=max DOCS_VERSION=5 vitepress preview docs",
+    "docs:preview:max4": "cross-env DOCS_PRODUCT=max DOCS_VERSION=4 vitepress preview docs",
+    "docs:preview:max5": "cross-env DOCS_PRODUCT=max DOCS_VERSION=5 vitepress preview docs",
+    "docs:preview:lng4": "cross-env DOCS_PRODUCT=lng DOCS_VERSION=4 vitepress preview docs",
+    "docs:preview:lng5": "cross-env DOCS_PRODUCT=lng DOCS_VERSION=5 vitepress preview docs"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": "",
+  "type": "module",
+  "devDependencies": {
+    "cross-env": "^7.0.3",
+    "vitepress": "^1.6.4"
+  }
+}
