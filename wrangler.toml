@@ -1,0 +1,5 @@
+name = "entis-help"
+compatibility_date = "2026-11-26"
+
+[assets]
+directory = "./docs/.vitepress/dist"
