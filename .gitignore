@@ -4,6 +4,7 @@ docs/.vitepress/dist/
 docs/.vitepress/cache/
 docs/.vitepress/.temp/
 docs/.vitepress/.cache/
+docs/.vitepress/tmp-verify-*/
 
 .wrangler/
 .dev.vars

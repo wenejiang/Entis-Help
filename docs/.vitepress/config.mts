@@ -20,6 +20,13 @@ const guideDir = path.join(docsDir, 'guide')
 const idsFile = path.join(currentDir, 'ids.json')
 const ID_START = 1000
 const target = resolveTarget()
+const parsedSidebarExpandLevel = Number.parseInt(
+  process.env.DOCS_SIDEBAR_EXPAND_LEVEL ?? '2',
+  10
+)
+const sidebarExpandLevel = Number.isFinite(parsedSidebarExpandLevel)
+  ? Math.max(0, parsedSidebarExpandLevel)
+  : 2
 
 const sidebarResizerScript = `
 (function () {
@@ -187,6 +194,7 @@ function buildSidebar(dir: string, relPrefix: string): SidebarItem[] {
   const entries = fs.readdirSync(dir, { withFileTypes: true })
   const sortable: Array<{ order: number; name: string; item: SidebarItem }> = []
   const handled = new Set<string>()
+  const currentLevel = relPrefix.split('/').filter(Boolean).length + 1
 
   const orderOf = (relativeFile: string): number =>
     parseOrderTag(tagsByFile.get(relativeFile) ?? []) ?? Number.MAX_SAFE_INTEGER
@@ -216,7 +224,7 @@ function buildSidebar(dir: string, relPrefix: string): SidebarItem[] {
         text: folderName,
         ...(indexIncluded ? { link: safeNumericLink(relativeIndexFile) } : {}),
         items: children,
-        collapsed: false
+        collapsed: currentLevel > sidebarExpandLevel
       }
     })
   }
@@ -297,21 +305,48 @@ export default defineConfig({
 
       registerVariantBlockFilter(md, target, warnVariant)
 
-      md.core.ruler.push('variant-numeric-permalinks', (state: any) => {
-        const current = state.env?.relativePath as string | undefined
-        if (!current) return
+      const toDocRelativePath = (filePath: string): string => {
+        const normalized = filePath.replace(/\\/g, '/')
+        if (/^[A-Za-z]:\//.test(normalized) || normalized.startsWith('/')) {
+          return path.relative(docsDir, normalized).split(path.sep).join('/')
+        }
+        return normalized
+      }
 
-        for (let index = 0; index < state.tokens.length; index++) {
-          const token = state.tokens[index]
-          if (token.type !== 'link_open') continue
+      const visitTokens = (
+        tokens: any[],
+        visitor: (token: any, index: number, tokens: any[]) => void
+      ): void => {
+        for (let index = 0; index < tokens.length; index++) {
+          const token = tokens[index]
+          visitor(token, index, tokens)
+          if (Array.isArray(token.children)) {
+            visitTokens(token.children, visitor)
+          }
+        }
+      }
+
+      md.core.ruler.push('variant-numeric-permalinks', (state: any) => {
+        const sourcePath =
+          (state.env?.realPath as string | undefined) ??
+          (state.env?.relativePath as string | undefined)
+        if (!sourcePath) return
+        const current = toDocRelativePath(sourcePath)
+
+        visitTokens(state.tokens, (token, index, tokens) => {
+          if (token.type !== 'link_open') return
 
           const href = token.attrGet('href')
-          if (!href || /^(https?:|mailto:|#)/i.test(href)) continue
+          if (!href || /^(?:[a-z][a-z0-9+.-]*:|\/\/|#)/i.test(href)) return
 
-          const hashIndex = href.indexOf('#')
-          const rawPath = hashIndex >= 0 ? href.slice(0, hashIndex) : href
-          const hash = hashIndex >= 0 ? href.slice(hashIndex) : ''
-          if (!rawPath) continue
+          let rawPath = href
+          let suffix = ''
+          const suffixIndex = href.search(/[?#]/)
+          if (suffixIndex >= 0) {
+            rawPath = href.slice(0, suffixIndex)
+            suffix = href.slice(suffixIndex)
+          }
+          if (!rawPath) return
 
           let decoded: string
           try {
@@ -319,15 +354,23 @@ export default defineConfig({
           } catch {
             decoded = rawPath
           }
-          if (!decoded.endsWith('.md')) continue
+          decoded = decoded.replace(/\\/g, '/')
+          if (!/\.(?:md|html)$/i.test(decoded)) return
 
           const clean = decoded.replace(/^\/+/, '')
-          const resolved = decoded.startsWith('/')
+          let resolved = decoded.startsWith('/')
             ? path.posix.normalize(clean)
-            : path.posix.normalize(path.posix.join(path.posix.dirname(current), clean))
+            : path.posix.normalize(
+                path.posix.join(path.posix.dirname(current), clean)
+              )
+
+          if (/\.html$/i.test(resolved)) {
+            resolved = resolved.replace(/\.html$/i, '.md')
+          }
+          if (!resolved.endsWith('.md')) return
 
           const numeric = numericLink(resolved)
-          if (!numeric) continue
+          if (!numeric) return
 
           if (!includedSet.has(resolved)) {
             token.type = 'text'
@@ -338,8 +381,8 @@ export default defineConfig({
             token.nesting = 0
 
             let depth = 1
-            for (let j = index + 1; j < state.tokens.length; j++) {
-              const next = state.tokens[j]
+            for (let j = index + 1; j < tokens.length; j++) {
+              const next = tokens[j]
               if (next.type === 'link_open') depth++
               if (next.type === 'link_close') {
                 depth--
@@ -354,11 +397,11 @@ export default defineConfig({
                 }
               }
             }
-            continue
+            return
           }
 
-          token.attrSet('href', numeric + hash)
-        }
+          token.attrSet('href', numeric + suffix)
+        })
       })
     }
   },
