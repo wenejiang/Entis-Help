@@ -1,29 +1,44 @@
 import fs from 'node:fs'
 import path from 'node:path'
+import crypto from 'node:crypto'
 import { fileURLToPath } from 'node:url'
 
 const scriptPath = fileURLToPath(import.meta.url)
 const rootDir = path.resolve(path.dirname(scriptPath), '..')
 const distDir = path.join(rootDir, 'docs', '.vitepress', 'dist')
 
+// 图标内容 hash 作为版本号，避免浏览器缓存旧图标
+const faviconFiles = ['favicon.svg', 'favicon.ico']
+  .map((name) => path.join(rootDir, 'docs', 'public', name))
+  .filter((file) => fs.existsSync(file))
+const faviconVersion = faviconFiles.length
+  ? crypto
+      .createHash('md5')
+      .update(faviconFiles.map((file) => fs.readFileSync(file)).reduce((a, b) => Buffer.concat([a, b])))
+      .digest('hex')
+      .slice(0, 8)
+  : '1'
+const faviconSvgHref = `/favicon.svg?v=${faviconVersion}`
+const faviconIcoHref = `/favicon.ico?v=${faviconVersion}`
+
 export const PORTAL_LINKS = [
   {
-    title: 'EntisMax 4.0',
+    title: 'EntisMax 4',
     href: '/entismax/v4/',
     details: '设备安装、系统配置、操作与维护文档。'
   },
   {
-    title: 'EntisMax 5.0',
+    title: 'EntisMax 5',
     href: '/entismax/v5/',
     details: '设备安装、系统配置、操作与维护文档。'
   },
   {
-    title: 'EntisLNG 4.0',
+    title: 'EntisLNG 4',
     href: '/entislng/v4/',
     details: '设备安装、系统配置、操作与维护文档。'
   },
   {
-    title: 'EntisLNG 5.0',
+    title: 'EntisLNG 5',
     href: '/entislng/v5/',
     details: '设备安装、系统配置、操作与维护文档。'
   }
@@ -45,6 +60,8 @@ export function renderRootPortal() {
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="icon" type="image/svg+xml" href="${faviconSvgHref}" />
+  <link rel="icon" sizes="any" type="image/x-icon" href="${faviconIcoHref}" />
   <title>帮助文档中心</title>
   <style>
     :root {
@@ -170,6 +187,15 @@ export function renderRootPortal() {
 
 export function writeRootPortal() {
   fs.mkdirSync(distDir, { recursive: true })
+
+  const publicDir = path.join(rootDir, 'docs', 'public')
+  for (const name of ['favicon.svg', 'favicon.ico', 'favicon.png']) {
+    const source = path.join(publicDir, name)
+    if (fs.existsSync(source)) {
+      fs.copyFileSync(source, path.join(distDir, name))
+    }
+  }
+
   const output = path.join(distDir, 'index.html')
   fs.writeFileSync(output, renderRootPortal(), 'utf-8')
   return output

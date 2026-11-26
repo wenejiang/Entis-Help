@@ -49,45 +49,45 @@ export const TARGETS: Target[] = [
     product: 'max',
     version: 4,
     productName: 'EntisMax',
-    versionLabel: '4.0',
+    versionLabel: '4',
     base: '/entismax/v4/',
     outDir: '.vitepress/dist/entismax/v4',
     cacheDir: '.vitepress/cache/entismax-v4',
-    title: 'EntisMax 4.0 帮助文档',
-    description: 'EntisMax 4.0 产品帮助中心'
+    title: 'EntisMax 4 帮助文档',
+    description: 'EntisMax 4 产品帮助中心'
   },
   {
     product: 'max',
     version: 5,
     productName: 'EntisMax',
-    versionLabel: '5.0',
+    versionLabel: '5',
     base: '/entismax/v5/',
     outDir: '.vitepress/dist/entismax/v5',
     cacheDir: '.vitepress/cache/entismax-v5',
-    title: 'EntisMax 5.0 帮助文档',
-    description: 'EntisMax 5.0 产品帮助中心'
+    title: 'EntisMax 5 帮助文档',
+    description: 'EntisMax 5 产品帮助中心'
   },
   {
     product: 'lng',
     version: 4,
     productName: 'EntisLNG',
-    versionLabel: '4.0',
+    versionLabel: '4',
     base: '/entislng/v4/',
     outDir: '.vitepress/dist/entislng/v4',
     cacheDir: '.vitepress/cache/entislng-v4',
-    title: 'EntisLNG 4.0 帮助文档',
-    description: 'EntisLNG 4.0 产品帮助中心'
+    title: 'EntisLNG 4 帮助文档',
+    description: 'EntisLNG 4 产品帮助中心'
   },
   {
     product: 'lng',
     version: 5,
     productName: 'EntisLNG',
-    versionLabel: '5.0',
+    versionLabel: '5',
     base: '/entislng/v5/',
     outDir: '.vitepress/dist/entislng/v5',
     cacheDir: '.vitepress/cache/entislng-v5',
-    title: 'EntisLNG 5.0 帮助文档',
-    description: 'EntisLNG 5.0 产品帮助中心'
+    title: 'EntisLNG 5 帮助文档',
+    description: 'EntisLNG 5 产品帮助中心'
   }
 ]
 

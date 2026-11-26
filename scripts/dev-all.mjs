@@ -18,7 +18,7 @@ const targets = [
     product: 'max',
     versionCode: '4',
     productName: 'EntisMax',
-    versionLabel: '4.0',
+    versionLabel: '4',
     base: '/entismax/v4/'
   },
   {
@@ -26,7 +26,7 @@ const targets = [
     product: 'max',
     versionCode: '5',
     productName: 'EntisMax',
-    versionLabel: '5.0',
+    versionLabel: '5',
     base: '/entismax/v5/'
   },
   {
@@ -34,7 +34,7 @@ const targets = [
     product: 'lng',
     versionCode: '4',
     productName: 'EntisLNG',
-    versionLabel: '4.0',
+    versionLabel: '4',
     base: '/entislng/v4/'
   },
   {
@@ -42,7 +42,7 @@ const targets = [
     product: 'lng',
     versionCode: '5',
     productName: 'EntisLNG',
-    versionLabel: '5.0',
+    versionLabel: '5',
     base: '/entislng/v5/'
   }
 ]

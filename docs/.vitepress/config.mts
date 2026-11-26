@@ -1,6 +1,7 @@
 import { defineConfig } from 'vitepress'
 import fs from 'node:fs'
 import path from 'node:path'
+import crypto from 'node:crypto'
 import { fileURLToPath } from 'node:url'
 import {
   KNOWN_TAGS,
@@ -18,8 +19,23 @@ const currentDir = path.dirname(fileURLToPath(import.meta.url))
 const docsDir = path.resolve(currentDir, '..')
 const guideDir = path.join(docsDir, 'guide')
 const idsFile = path.join(currentDir, 'ids.json')
+
 const ID_START = 1000
 const target = resolveTarget()
+
+// 用图标内容 hash 作为版本号，图标文件变化后浏览器会强制重新加载，避免 favicon 缓存
+const faviconFiles = ['favicon.svg', 'favicon.ico']
+  .map((name) => path.join(docsDir, 'public', name))
+  .filter((file) => fs.existsSync(file))
+const faviconVersion = faviconFiles.length
+  ? crypto
+      .createHash('md5')
+      .update(faviconFiles.map((file) => fs.readFileSync(file)).reduce((a, b) => Buffer.concat([a, b])))
+      .digest('hex')
+      .slice(0, 8)
+  : '1'
+const faviconSvgHref = `${target.base}favicon.svg?v=${faviconVersion}`
+const faviconIcoHref = `${target.base}favicon.ico?v=${faviconVersion}`
 const parsedSidebarExpandLevel = Number.parseInt(
   process.env.DOCS_SIDEBAR_EXPAND_LEVEL ?? '2',
   10
@@ -266,6 +282,8 @@ export default defineConfig({
   description: target.description,
   lang: 'zh-CN',
   head: [
+    ['link', { rel: 'icon', type: 'image/svg+xml', href: faviconSvgHref }],
+    ['link', { rel: 'icon', sizes: 'any', type: 'image/x-icon', href: faviconIcoHref }],
     ['script', {}, sidebarResizerScript],
     ['script', {}, buildVariantSwitcherScript(target)]
   ],
