@@ -20,7 +20,11 @@
     "docs:preview:max4": "cross-env DOCS_PRODUCT=max DOCS_VERSION=4 vitepress preview docs",
     "docs:preview:max5": "cross-env DOCS_PRODUCT=max DOCS_VERSION=5 vitepress preview docs",
     "docs:preview:lng4": "cross-env DOCS_PRODUCT=lng DOCS_VERSION=4 vitepress preview docs",
-    "docs:preview:lng5": "cross-env DOCS_PRODUCT=lng DOCS_VERSION=5 vitepress preview docs"
+    "docs:preview:lng5": "cross-env DOCS_PRODUCT=lng DOCS_VERSION=5 vitepress preview docs",
+    "auth:ticket": "node scripts/auth-token.mjs ticket",
+    "auth:qr:create": "node scripts/auth-token.mjs qr:create",
+    "auth:qr:revoke": "node scripts/auth-token.mjs qr:revoke",
+    "auth:qr:list": "node scripts/auth-token.mjs qr:list"
   },
   "keywords": [],
   "author": "",

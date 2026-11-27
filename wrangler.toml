@@ -1,5 +1,13 @@
 name = "entis-help"
+main = "./worker/auth.mjs"
 compatibility_date = "2026-11-26"
 
 [assets]
 directory = "./docs/.vitepress/dist"
+binding = "ASSETS"
+run_worker_first = true
+
+[[kv_namespaces]]
+binding = "AUTH_STATE"
+# 运行 npx wrangler kv namespace create AUTH_STATE 后替换为返回的 namespace id
+id = "5cbe32d143394e52b3e7d517a44cc491"
