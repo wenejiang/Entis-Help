@@ -9,6 +9,9 @@ const SESSION_TTL_SECONDS = 7 * 24 * 60 * 60
 const MAX_FAILURES = 5
 const LOCK_SECONDS = 15 * 60
 const UUID_PATTERN = /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i
+const SERIAL_USER_ID_INDEXES = [25, 27, 29, 31]
+const MAX_USER_ID_LENGTH = 32
+const MAX_SERIAL_LENGTH = 1024
 
 const PUBLIC_EXTENSIONS = new Set([
   '.png',
@@ -134,6 +137,25 @@ function sanitizeNext(raw) {
   return pathname || '/'
 }
 
+function parseUserId(raw) {
+  if (typeof raw !== 'string') return null
+  const value = raw.trim()
+  if (!value || value.length > MAX_USER_ID_LENGTH || !/^\d+$/.test(value)) return null
+  const numeric = Number(value)
+  return Number.isSafeInteger(numeric) ? numeric : null
+}
+
+function extractUserIdFromSerial(raw) {
+  if (typeof raw !== 'string') return null
+  const serial = raw.trim()
+  if (serial.length > MAX_SERIAL_LENGTH) return null
+  if (SERIAL_USER_ID_INDEXES.some((index) => index >= serial.length)) return null
+
+  const hiddenHex = SERIAL_USER_ID_INDEXES.map((index) => serial[index]).join('')
+  if (!/^[0-9a-fA-F]{4}$/.test(hiddenHex)) return null
+  return Number.parseInt(hiddenHex, 16)
+}
+
 async function clientIpHash(request) {
   const fromCloudflare = request.headers.get('cf-connecting-ip')
   const forwarded = request.headers.get('x-forwarded-for')
@@ -147,6 +169,15 @@ function securityHeaders(headers = {}) {
   return result
 }
 
+function escapeHtml(value) {
+  return String(value)
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#39;')
+}
+
 async function serveAsset(request, env) {
   const response = await env.ASSETS.fetch(request)
   return new Response(response.body, {
@@ -156,7 +187,12 @@ async function serveAsset(request, env) {
   })
 }
 
-function deniedResponse(status = 401, message = '未授权访问，请通过有效链接进入。', extraHeaders = {}) {
+function deniedResponse(status = 401, message = '未授权访问，请通过有效链接进入。', extraHeaders = {}, loginNext = null) {
+  const safeNext = loginNext ? sanitizeNext(loginNext) : '/'
+  const loginHref = loginNext ? `/login?next=${encodeURIComponent(safeNext)}` : '/login'
+  const loginLink = status === 401
+    ? `<a class="login-link" href="${loginHref}">使用用户ID和序列号登录</a>`
+    : ''
   const html = `<!doctype html>
 <html lang="zh-CN">
 <head>
@@ -169,9 +205,10 @@ body { margin: 0; min-height: 100vh; display: grid; place-items: center; padding
 main { max-width: 520px; padding: 32px; border: 1px solid rgba(255,255,255,.12); border-radius: 18px; background: rgba(255,255,255,.045); }
 h1 { margin: 0 0 12px; font-size: 24px; }
 p { margin: 0; color: #aeb8d4; line-height: 1.7; }
+.login-link { display: inline-block; margin-top: 22px; padding: 10px 16px; border-radius: 10px; background: #4f7cff; color: #fff; text-decoration: none; font-weight: 600; }
 </style>
 </head>
-<body><main><h1>访问受限</h1><p>${message}</p></main></body>
+<body><main><h1>访问受限</h1><p>${escapeHtml(message)}</p>${loginLink}</main></body>
 </html>`
 
   const headers = securityHeaders({
@@ -182,6 +219,53 @@ p { margin: 0; color: #aeb8d4; line-height: 1.7; }
   })
 
   return new Response(html, { status, headers })
+}
+
+function loginPage(next = '/', error = '') {
+  const safeNext = sanitizeNext(next)
+  const hiddenNext = escapeHtml(safeNext)
+  const errorHtml = error ? `<p class="error">${escapeHtml(error)}</p>` : ''
+  const html = `<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>帮助文档登录</title>
+<style>
+:root { color-scheme: dark; font-family: "Segoe UI", "Microsoft YaHei", sans-serif; background: #0b1020; color: #e8ecf8; }
+body { margin: 0; min-height: 100vh; display: grid; place-items: center; padding: 24px; background: radial-gradient(circle at 20% 15%, rgba(92,129,255,.22), transparent 35%), #0b1020; }
+main { width: 100%; max-width: 420px; padding: 32px; border: 1px solid rgba(255,255,255,.12); border-radius: 18px; background: rgba(255,255,255,.045); }
+h1 { margin: 0 0 8px; font-size: 24px; }
+.hint { margin: 0 0 24px; color: #aeb8d4; line-height: 1.6; font-size: 14px; }
+label { display: block; margin-bottom: 16px; font-size: 14px; color: #cbd4ef; }
+input { box-sizing: border-box; width: 100%; margin-top: 8px; padding: 12px 14px; border: 1px solid rgba(255,255,255,.16); border-radius: 10px; background: rgba(255,255,255,.06); color: #e8ecf8; font: inherit; outline: none; }
+input:focus { border-color: #6f95ff; box-shadow: 0 0 0 3px rgba(111,149,255,.18); }
+button { width: 100%; margin-top: 8px; padding: 12px 16px; border: 0; border-radius: 10px; background: #4f7cff; color: #fff; font: inherit; font-weight: 600; cursor: pointer; }
+button:hover { background: #638cff; }
+.error { margin: 0 0 18px; padding: 10px 12px; border: 1px solid rgba(255,120,120,.35); border-radius: 10px; background: rgba(255,90,90,.1); color: #ffb4b4; font-size: 14px; }
+</style>
+</head>
+<body><main>
+<h1>帮助文档登录</h1>
+<p class="hint">请输入用户ID和序列号以继续访问。</p>
+${errorHtml}
+<form method="post" action="/login">
+<input type="hidden" name="next" value="${hiddenNext}" />
+<label>用户ID<input name="userId" type="text" inputmode="numeric" autocomplete="off" required /></label>
+<label>序列号<input name="serial" type="text" autocomplete="off" required /></label>
+<button type="submit">登录</button>
+</form>
+</main></body>
+</html>`
+
+  return new Response(html, {
+    status: 200,
+    headers: securityHeaders({
+      'Content-Type': 'text/html; charset=utf-8',
+      'Cache-Control': 'no-store',
+      'Content-Security-Policy': "default-src 'none'; style-src 'unsafe-inline'; base-uri 'none'; form-action 'self'"
+    })
+  })
 }
 
 function redirectResponse(location, extraHeaders = {}) {
@@ -298,6 +382,14 @@ async function failAndRedirect(env, ipHash) {
   return redirectResponse('/unauthorized')
 }
 
+async function failLogin(env, ipHash, next) {
+  const state = await recordFailure(env, ipHash)
+  if (state.lockedUntil > nowSeconds()) {
+    return deniedResponse(429, '尝试次数过多，请 15 分钟后重试。', { 'Retry-After': String(LOCK_SECONDS) })
+  }
+  return loginPage(next, '用户ID或序列号不正确，请重试。')
+}
+
 function isPublicAsset(request, url) {
   if (request.method !== 'GET' && request.method !== 'HEAD') return false
 
@@ -386,6 +478,57 @@ async function handleQrLogin(request, env, url) {
   })
 }
 
+async function handleSerialLogin(request, env, url) {
+  const ipHash = await clientIpHash(request)
+  if (await isLockedIp(env, ipHash)) {
+    return deniedResponse(429, '尝试次数过多，请 15 分钟后重试。', { 'Retry-After': String(LOCK_SECONDS) })
+  }
+
+  if (request.method === 'GET') {
+    return loginPage(url.searchParams.get('next'))
+  }
+
+  if (request.method !== 'POST') {
+    return deniedResponse(405, '仅支持 GET 或 POST 请求。')
+  }
+
+  let formData
+  try {
+    formData = await request.formData()
+  } catch {
+    return failLogin(env, ipHash, url.searchParams.get('next'))
+  }
+
+  const formNext = formData.get('next')
+  const next = sanitizeNext(
+    typeof formNext === 'string' && formNext ? formNext : url.searchParams.get('next')
+  )
+  const userId = parseUserId(formData.get('userId'))
+  const serialUserId = extractUserIdFromSerial(formData.get('serial'))
+
+  if (userId === null || serialUserId === null || userId !== serialUserId) {
+    return failLogin(env, ipHash, next)
+  }
+
+  await resetFailure(env, ipHash)
+  const grantId = `s:${crypto.randomUUID()}`
+  await env.AUTH_STATE.put(
+    `grant:${grantId}`,
+    JSON.stringify({
+      v: 1,
+      sub: String(userId),
+      typ: 'user',
+      source: 'serial-login',
+      createdAt: new Date().toISOString()
+    }),
+    { expirationTtl: SESSION_TTL_SECONDS }
+  )
+
+  return redirectResponse(next, {
+    'Set-Cookie': await createSessionCookie(env, url, grantId, String(userId), 'user')
+  })
+}
+
 export default {
   async fetch(request, env) {
     const url = new URL(request.url)
@@ -393,7 +536,11 @@ export default {
 
     if (isPublicAsset(request, url)) return serveAsset(request, env)
 
-    if (pathname === '/unauthorized') return deniedResponse()
+    if (pathname === '/unauthorized') {
+      return deniedResponse(401, '未授权访问，请通过有效链接进入。', {}, url.searchParams.get('next'))
+    }
+
+    if (pathname === '/login' || pathname === '/login/') return handleSerialLogin(request, env, url)
 
     if (pathname === '/logout') {
       const secure = url.protocol === 'https:' ? 'Secure; ' : ''
@@ -405,11 +552,12 @@ export default {
     if (pathname === '/auto-login') return handleAutoLogin(request, env, url)
     if (pathname === '/qr-login') return handleQrLogin(request, env, url)
 
+    const loginLocation = `/login?next=${encodeURIComponent(pathname + url.search)}`
     const session = await verifySession(request.headers.get('cookie'), env.SESSION_SECRET)
-    if (!session) return redirectResponse('/unauthorized')
+    if (!session) return redirectResponse(loginLocation)
 
     const grant = await env.AUTH_STATE.get(`grant:${session.gid}`, 'json')
-    if (!grant || grant.v !== 1 || grant.enabled === false) return redirectResponse('/unauthorized')
+    if (!grant || grant.v !== 1 || grant.enabled === false) return redirectResponse(loginLocation)
 
     return serveAsset(request, env)
   }
